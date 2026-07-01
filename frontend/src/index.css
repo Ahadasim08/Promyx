@@ -1,0 +1,65 @@
+:root {
+  --text: oklch(42% 0.03 45);
+  --text-h: oklch(22% 0.025 40);
+  --bg: oklch(97.5% 0.014 60);
+  --bg-sunken: oklch(94% 0.02 55);
+  --border: oklch(88% 0.025 50);
+  --accent: oklch(52% 0.16 35);
+  --kept: oklch(45% 0.11 140);
+  --kept-bg: oklch(94% 0.045 135);
+  --broken: oklch(48% 0.17 25);
+  --broken-bg: oklch(94% 0.05 35);
+  --open: oklch(52% 0.15 70);
+  --open-bg: oklch(94% 0.06 80);
+
+  font: 15px/1.5 system-ui, "Segoe UI", Roboto, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+:root.dark {
+  --text: oklch(75% 0.02 50);
+  --text-h: oklch(93% 0.015 55);
+  --bg: oklch(19% 0.018 40);
+  --bg-sunken: oklch(24% 0.022 40);
+  --border: oklch(32% 0.025 40);
+  --accent: oklch(68% 0.15 35);
+  --kept: oklch(72% 0.13 140);
+  --kept-bg: oklch(26% 0.05 135);
+  --broken: oklch(72% 0.16 25);
+  --broken-bg: oklch(28% 0.06 25);
+  --open: oklch(75% 0.13 75);
+  --open-bg: oklch(28% 0.06 80);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+h1, h2, h3 {
+  color: var(--text-h);
+  font-weight: 600;
+  margin: 0;
+}
+
+button {
+  font: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

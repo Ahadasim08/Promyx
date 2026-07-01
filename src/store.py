@@ -10,6 +10,8 @@ import re
 import sqlite3
 from pathlib import Path
 
+from jira_client import fetch_live_tickets
+
 ROOT = Path(__file__).resolve().parent.parent
 TICKETS_PATH = ROOT / "data" / "jira_tickets.json"
 EXTRACTED_DIR = ROOT / "data" / "extracted"
@@ -34,8 +36,22 @@ CREATE TABLE IF NOT EXISTS promises (
 
 
 def load_tickets():
-    data = json.loads(TICKETS_PATH.read_text(encoding="utf-8"))
-    return {t["key"]: t for t in data["tickets"]}
+    """Maps PROM-N ticket keys (as extracted from transcripts) to live Jira
+    ticket status, joined by summary text since the real Jira project uses
+    its own key scheme (KAN-N), not PROM-N.
+    """
+    mock = json.loads(TICKETS_PATH.read_text(encoding="utf-8"))
+    live = fetch_live_tickets()
+    tickets = {}
+    for t in mock["tickets"]:
+        live_t = live.get(t["summary"].strip().lower())
+        tickets[t["key"]] = {
+            "key": live_t["key"] if live_t else t["key"],
+            "summary": t["summary"],
+            "status": live_t["status"] if live_t else None,
+            "assignee": live_t["assignee"] if live_t else None,
+        }
+    return tickets
 
 
 def norm(s):
