@@ -120,3 +120,57 @@ def investigate(client: Groq, row: dict, transcript_text: str, tickets: dict) ->
             "suggested_deadline": row.get("deadline"),
             "suggested_verdict": "open",
         }
+
+
+def load_promises(conn):
+    conn.row_factory = sqlite3.Row
+    return [dict(r) for r in conn.execute("SELECT * FROM promises")]
+
+
+def run():
+    load_dotenv(ROOT / ".env")
+    api_key = os.environ.get("GROQ_API_KEY")
+    if not api_key:
+        print("GROQ_API_KEY not set. Put it in .env at project root.", file=sys.stderr)
+        sys.exit(1)
+
+    client = Groq(api_key=api_key)
+    tickets = load_tickets()
+
+    conn = sqlite3.connect(DB_PATH)
+    promises = load_promises(conn)
+    build_agent_table(conn)
+
+    hard_rows = [(row, is_hard_case(row)) for row in promises]
+    hard_rows = [(row, reasons) for row, reasons in hard_rows if reasons]
+
+    print(f"Flagged {len(hard_rows)}/{len(promises)} promises as hard cases.")
+
+    inserted = []
+    for row, reasons in hard_rows:
+        transcript_path = TRANSCRIPTS_DIR / row["meeting"]
+        transcript_text = transcript_path.read_text(encoding="utf-8") if transcript_path.exists() else ""
+        result = investigate(client, row, transcript_text, tickets)
+        inserted.append((
+            row["id"],
+            "; ".join(reasons),
+            result.get("reasoning", ""),
+            result.get("suggested_ticket"),
+            result.get("suggested_deadline"),
+            result.get("suggested_verdict", "open"),
+        ))
+        print(f"  promise {row['id']} ({row['speaker']}): {reasons} -> suggested {result.get('suggested_verdict')}")
+
+    conn.executemany(
+        "INSERT INTO agent_reviews (promise_id, hard_case_reasons, reasoning, suggested_ticket, suggested_deadline, suggested_verdict) "
+        "VALUES (?, ?, ?, ?, ?, ?)",
+        inserted,
+    )
+    conn.commit()
+    conn.close()
+    return len(inserted)
+
+
+if __name__ == "__main__":
+    n = run()
+    print(f"Wrote {n} agent reviews -> {DB_PATH}")
