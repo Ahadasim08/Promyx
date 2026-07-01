@@ -1,9 +1,16 @@
 # progress.md — Promise Tracker
 
 ## Current phase
-Step 4 (review web page) — FINISHED. Steps 0-4 all complete. Not started Step 5.
+Step 5 (hard-case reasoning agent) — FINISHED. Steps 0-5 all complete.
 
-## This session
+## This session (Step 5)
+- Added `src/agent_review.py`: flags "hard case" promises (null ticket, null deadline, or vague wording like "soon"/"take care of") purely from data already in `promises.db`, then investigates each with a Groq LLM call (full transcript + full ticket list as context) and writes plain-language reasoning + a suggested verdict to a new `agent_reviews` table. Purely additive — never touches `promises.db`'s `promises` table, `extract.py`, or `store.py`/`check.py`'s decision logic.
+- `src/check.py` got one advisory, print-only addition (`load_agent_reviews()` + a new section in `__main__`): shows the agent's suggested verdict + reasoning next to the rule-based decision for hard cases. `check_all()`'s return value is unchanged — verified byte-identical decision counts before/after.
+- Added `src/grade_agent.py`: the 4th metric (see below), same speaker+text pairing convention as `grade_linking.py`/`grade_checking.py`.
+- Built via subagent-driven-development in an isolated worktree (`.claude/worktrees/step-5-reasoning-agent`), 6 tasks. Two review-loop fixes worth remembering: both `check.py`'s and `grade_agent.py`'s new `agent_reviews`-table lookups originally used a bare `except sqlite3.OperationalError: pass` (meant to handle "table not created yet" but silently swallowing any DB error) — narrowed to only suppress the specific "no such table" message and re-raise everything else.
+- Design spec: `docs/superpowers/specs/2026-07-01-step5-reasoning-agent-design.md`. Plan: `docs/superpowers/plans/2026-07-01-step5-reasoning-agent.md`.
+
+## Earlier this session (Step 4 UI + real Jira, prior work)
 - Finished Step 4: review dashboard with working human override buttons. Clicking Kept/Broken/Open calls `POST /api/promises/<id>/override/`, which writes to Django's `Override` table — confirmed this persists across a hard refresh (reads back via `GET /api/promises/`), not just optimistic UI state.
 - Heavy UI pass on top of the working Step 4 base (all via `/impeccable`): warm OKLCH color system (replaced the original cool-blue palette), `lucide-react` icons throughout, collapsible sidebar with status filters + sliding active-indicator, manual dark-mode toggle (class-based, independent of OS preference), collapsible status groups (Kept collapsed by default to cut scroll length), search by speaker/ticket, sort (deadline/speaker), collapse-all/expand-all, save-success flash + per-row error+retry on failed override, skeleton loading state, "Promyx" branding made prominent (28px bold wordmark in header + sidebar, was previously a barely-visible 12px kicker), speaker names enlarged/bolded in each row (were 12px, same weight as meeting filename — hard to scan).
 - None of this touched `src/*.py` or the metrics — it's all `backend/tracker/views.py` (unchanged) + `frontend/`.
@@ -27,7 +34,12 @@ Step 4 (review web page) — FINISHED. Steps 0-4 all complete. Not started Step 
 - New `.env` vars: `JIRA_SITE_URL`, `JIRA_EMAIL`, `JIRA_API_TOKEN`, `JIRA_PROJECT_KEY` (gitignored).
 
 ## Next
-- Single next action: none required — real Jira integration is verified and working. Step 5 (the "smart investigator" reasoning agent) is the only thing left, stretch/optional. Don't start without user confirmation first.
+- Steps 0-5 all complete. No required next action. Possible future work: the agent's suggested_verdict is currently advisory-only (never overrides check.py's decision) — if that's ever revisited, it needs its own explicit decision, not a silent default.
+
+## How to run Step 5
+- After `python src/store.py`, run `python src/agent_review.py` to (re)build the `agent_reviews` table (needs `GROQ_API_KEY` in `.env`, same as Step 1).
+- `python src/check.py` shows the advisory hard-case section automatically if `agent_reviews` has rows.
+- `python src/grade_agent.py` prints the 4th metric.
 
 ## How to run Step 4
 - Backend: `cd backend && python manage.py runserver 8000` (needs `pip install -r requirements.txt`; first time also run `python manage.py migrate`).
@@ -38,6 +50,7 @@ Step 4 (review web page) — FINISHED. Steps 0-4 all complete. Not started Step 
 1. Promise-finding: recall = 1.00 (19/19), precision = 1.00 (19/19) — `src/grade.py`. Unaffected by the Jira swap or live status drift.
 2. Linking: % correct ticket = 19/19 = 1.00 — `src/grade_linking.py`. Unaffected — summary-text matching is working correctly.
 3. Checking: accuracy = 15/19 = 0.79, false-accusation rate = 0/8 = 0.00 — `src/grade_checking.py`. Lower than the mock-data baseline (was 18/19) because several real tickets (`KAN-5`, `KAN-8`, `KAN-9`, `KAN-11`) were manually moved to Done in Jira during this session's verification testing — this is expected drift from live data changing, not a pipeline bug. False-accusation rate (the metric that must stay low per CLAUDE.md) is unaffected at 0.00.
+4. Hard-case agent (Step 5): 1/19 promises flagged as hard cases (P10, Maria's "I'll take care of that thing with the checkout tests soon" — null deadline + vague wording) — `src/grade_agent.py`. Agent suggested_verdict accuracy on that hard case: 0/1 = 0.00 (agent suggested "open", ground truth is "broken"; the LLM correctly identified the ticket link and reasoned about the vague "soon" deadline, but ultimately hedged toward "open" rather than inferring the deadline had passed by the evaluation date). This is the actual result, not a target — worth another look if Step 5 gets revisited, but out of scope for this session per the plan.
 
 ## Decisions
 - Jira simulated locally via `data/jira_tickets.json` for Steps 0-2; real Jira REST API wiring is Step 3+ scope per CLAUDE.md but not yet done (Step 3 so far only added local kept/broken/open logic on top of the simulated data — real API integration still pending, see Surprises).
