@@ -36,6 +36,17 @@ def check_all():
     return rows
 
 
+def load_agent_reviews():
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    try:
+        rows = [dict(r) for r in conn.execute("SELECT * FROM agent_reviews")]
+    except sqlite3.OperationalError:
+        rows = []
+    conn.close()
+    return {r["promise_id"]: r for r in rows}
+
+
 if __name__ == "__main__":
     rows = check_all()
     print(f"{'meeting':<14}{'speaker':<9}{'ticket':<9}{'ticket_status':<15}{'deadline':<12}{'decision':<9}")
@@ -46,3 +57,14 @@ if __name__ == "__main__":
         counts[r["decision"]] = counts.get(r["decision"], 0) + 1
     print("-" * 68)
     print(f"Decisions: {counts}")
+
+    reviews = load_agent_reviews()
+    if reviews:
+        print()
+        print("Hard-case agent reviews (advisory only, does not change decisions above):")
+        for r in rows:
+            review = reviews.get(r["id"])
+            if review:
+                print(f"  promise {r['id']} ({r['speaker']}): rule-based={r['decision']} | agent suggests={review['suggested_verdict']}")
+                print(f"    reasons flagged: {review['hard_case_reasons']}")
+                print(f"    reasoning: {review['reasoning']}")
