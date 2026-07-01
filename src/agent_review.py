@@ -99,15 +99,24 @@ Full meeting transcript ({row['meeting']}):
 
 def investigate(client: Groq, row: dict, transcript_text: str, tickets: dict) -> dict:
     user_prompt = build_user_prompt(row, transcript_text, tickets)
-    resp = client.chat.completions.create(
-        model=MODEL,
-        messages=[
-            {"role": "system", "content": SYSTEM_PROMPT},
-            {"role": "user", "content": user_prompt},
-        ],
-        temperature=0,
-        response_format={"type": "json_object"},
-    )
+    try:
+        resp = client.chat.completions.create(
+            model=MODEL,
+            messages=[
+                {"role": "system", "content": SYSTEM_PROMPT},
+                {"role": "user", "content": user_prompt},
+            ],
+            temperature=0,
+            response_format={"type": "json_object"},
+        )
+    except Exception as e:
+        print(f"WARNING: Groq call failed for promise {row['id']}: {e}", file=sys.stderr)
+        return {
+            "reasoning": f"Agent call failed ({e}); no reasoning available.",
+            "suggested_ticket": row.get("ticket"),
+            "suggested_deadline": row.get("deadline"),
+            "suggested_verdict": "open",
+        }
     content = resp.choices[0].message.content
     try:
         return json.loads(content)
@@ -146,29 +155,29 @@ def run():
 
     print(f"Flagged {len(hard_rows)}/{len(promises)} promises as hard cases.")
 
-    inserted = []
+    inserted = 0
     for row, reasons in hard_rows:
         transcript_path = TRANSCRIPTS_DIR / row["meeting"]
         transcript_text = transcript_path.read_text(encoding="utf-8") if transcript_path.exists() else ""
         result = investigate(client, row, transcript_text, tickets)
-        inserted.append((
-            row["id"],
-            "; ".join(reasons),
-            result.get("reasoning", ""),
-            result.get("suggested_ticket"),
-            result.get("suggested_deadline"),
-            result.get("suggested_verdict", "open"),
-        ))
+        conn.execute(
+            "INSERT INTO agent_reviews (promise_id, hard_case_reasons, reasoning, suggested_ticket, suggested_deadline, suggested_verdict) "
+            "VALUES (?, ?, ?, ?, ?, ?)",
+            (
+                row["id"],
+                "; ".join(reasons),
+                result.get("reasoning", ""),
+                result.get("suggested_ticket"),
+                result.get("suggested_deadline"),
+                result.get("suggested_verdict", "open"),
+            ),
+        )
+        conn.commit()
+        inserted += 1
         print(f"  promise {row['id']} ({row['speaker']}): {reasons} -> suggested {result.get('suggested_verdict')}")
 
-    conn.executemany(
-        "INSERT INTO agent_reviews (promise_id, hard_case_reasons, reasoning, suggested_ticket, suggested_deadline, suggested_verdict) "
-        "VALUES (?, ?, ?, ?, ?, ?)",
-        inserted,
-    )
-    conn.commit()
     conn.close()
-    return len(inserted)
+    return inserted
 
 
 if __name__ == "__main__":
