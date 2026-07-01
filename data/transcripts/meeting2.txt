@@ -1,0 +1,6 @@
+Team Standup — 2026-06-10
+
+Maria: The checkout tests are still flaky. I'll fix the flaky checkout test by June 15.
+Chen: I'll add the dark mode toggle by June 20.
+Tom: I'll fix the memory leak in the worker by June 25, it's been causing restarts.
+Maria: Also we should talk about upgrading the CI runners at some point.

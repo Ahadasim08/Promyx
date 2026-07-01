@@ -1,0 +1,7 @@
+Team Standup — 2026-06-15
+
+Priya: I'll finish the onboarding docs by June 18.
+Ben: I'll migrate the DB to Postgres 15 by July 10, need to coordinate a maintenance window.
+Ali: I'll add rate limiting to the API by July 15.
+Maria: I'll take care of that thing with the checkout tests soon.
+Priya: Sounds good, keep us posted.

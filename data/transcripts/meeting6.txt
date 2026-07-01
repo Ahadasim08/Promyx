@@ -1,0 +1,6 @@
+Team Standup — 2026-06-28
+
+Ali: I'll remove the deprecated v1 API endpoints by July 30.
+Sara: I'll fix the mobile nav overlap bug by June 29.
+Chen: I'll set up error monitoring with Sentry by June 29.
+Ali: Great week everyone, let's keep the momentum going.

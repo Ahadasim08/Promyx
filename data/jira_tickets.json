@@ -1,0 +1,24 @@
+{
+  "project": "PROM",
+  "exported_at": "2026-07-01",
+  "tickets": [
+    { "key": "PROM-1",  "summary": "Fix login bug",                          "status": "Done",        "assignee": "Ali" },
+    { "key": "PROM-2",  "summary": "Add CSV export button",                  "status": "Done",        "assignee": "Sara" },
+    { "key": "PROM-3",  "summary": "Set up CI pipeline",                     "status": "Done",        "assignee": "Ben" },
+    { "key": "PROM-4",  "summary": "Fix flaky checkout test",                "status": "In Progress", "assignee": "Maria" },
+    { "key": "PROM-5",  "summary": "Add dark mode toggle",                   "status": "To Do",       "assignee": "Chen" },
+    { "key": "PROM-6",  "summary": "Migrate DB to Postgres 15",              "status": "In Progress", "assignee": "Ben" },
+    { "key": "PROM-7",  "summary": "Write onboarding docs",                  "status": "Done",        "assignee": "Priya" },
+    { "key": "PROM-8",  "summary": "Fix memory leak in worker",              "status": "In Progress", "assignee": "Tom" },
+    { "key": "PROM-9",  "summary": "Add rate limiting to API",               "status": "To Do",       "assignee": "Ali" },
+    { "key": "PROM-10", "summary": "Redesign settings page",                 "status": "To Do",       "assignee": "Sara" },
+    { "key": "PROM-11", "summary": "Fix broken password reset email",        "status": "Done",        "assignee": "Maria" },
+    { "key": "PROM-12", "summary": "Add Slack notifications",                "status": "In Progress", "assignee": "Chen" },
+    { "key": "PROM-13", "summary": "Optimize image upload pipeline",         "status": "To Do",       "assignee": "Tom" },
+    { "key": "PROM-14", "summary": "Fix timezone bug in reports",            "status": "Done",        "assignee": "Priya" },
+    { "key": "PROM-15", "summary": "Add unit tests for billing module",      "status": "In Progress", "assignee": "Ben" },
+    { "key": "PROM-16", "summary": "Remove deprecated v1 API endpoints",     "status": "To Do",       "assignee": "Ali" },
+    { "key": "PROM-17", "summary": "Fix mobile nav overlap bug",             "status": "Done",        "assignee": "Sara" },
+    { "key": "PROM-18", "summary": "Set up error monitoring (Sentry)",       "status": "Done",        "assignee": "Chen" }
+  ]
+}

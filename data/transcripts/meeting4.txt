@@ -1,0 +1,6 @@
+Team Standup — 2026-06-20
+
+Maria: I'll fix the broken password reset email by June 22, users are complaining.
+Sara: I'll redesign the settings page by June 25.
+Chen: I'll add Slack notifications by July 5.
+Sara: Also, has anyone looked at the analytics dashboard lately? Might need a refresh eventually.

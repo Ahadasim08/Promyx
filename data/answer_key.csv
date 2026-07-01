@@ -1,0 +1,20 @@
+promise_id,transcript_file,speaker,promise_text,ticket,deadline,ticket_status_as_of_eval,ground_truth,notes
+P01,meeting1.txt,Ali,"I'll close the login bug ticket by Friday, June 5.",PROM-1,2026-06-05,Done,kept,clear promise clear ticket
+P02,meeting1.txt,Sara,"I'll get the CSV export button done by next Monday, June 8.",PROM-2,2026-06-08,Done,kept,clear promise clear ticket
+P03,meeting1.txt,Ben,"I'll have the CI pipeline set up by end of this week, June 5.",PROM-3,2026-06-05,Done,kept,clear promise clear ticket
+P04,meeting2.txt,Maria,"I'll fix the flaky checkout test by June 15.",PROM-4,2026-06-15,In Progress,broken,deadline passed vs eval date 2026-07-01 ticket still not done
+P05,meeting2.txt,Chen,"I'll add the dark mode toggle by June 20.",PROM-5,2026-06-20,To Do,broken,deadline passed ticket not started
+P06,meeting2.txt,Tom,"I'll fix the memory leak in the worker by June 25, it's been causing restarts.",PROM-8,2026-06-25,In Progress,broken,deadline passed vs eval date
+P07,meeting3.txt,Priya,"I'll finish the onboarding docs by June 18.",PROM-7,2026-06-18,Done,kept,clear promise clear ticket
+P08,meeting3.txt,Ben,"I'll migrate the DB to Postgres 15 by July 10, need to coordinate a maintenance window.",PROM-6,2026-07-10,In Progress,open,deadline not yet reached vs eval date 2026-07-01
+P09,meeting3.txt,Ali,"I'll add rate limiting to the API by July 15.",PROM-9,2026-07-15,To Do,open,deadline not yet reached
+P10,meeting3.txt,Maria,"I'll take care of that thing with the checkout tests soon.",PROM-4,none stated,In Progress,broken,VAGUE promise - no explicit deadline - inferred ticket same as P04 - "soon" already passed by eval date - good test case for linking+vagueness handling
+P11,meeting4.txt,Maria,"I'll fix the broken password reset email by June 22, users are complaining.",PROM-11,2026-06-22,Done,kept,clear promise clear ticket
+P12,meeting4.txt,Sara,"I'll redesign the settings page by June 25.",PROM-10,2026-06-25,To Do,broken,deadline passed ticket not started
+P13,meeting4.txt,Chen,"I'll add Slack notifications by July 5.",PROM-12,2026-07-05,In Progress,open,deadline not yet reached
+P14,meeting5.txt,Priya,"I'll fix the timezone bug in reports by June 28.",PROM-14,2026-06-28,Done,kept,clear promise clear ticket
+P15,meeting5.txt,Tom,"I'll optimize the image upload pipeline by July 20.",PROM-13,2026-07-20,To Do,open,deadline not yet reached
+P16,meeting5.txt,Ben,"I'll write unit tests for the billing module by June 30.",PROM-15,2026-06-30,In Progress,broken,deadline passed by one day vs eval date 2026-07-01
+P17,meeting6.txt,Ali,"I'll remove the deprecated v1 API endpoints by July 30.",PROM-16,2026-07-30,To Do,open,deadline not yet reached
+P18,meeting6.txt,Sara,"I'll fix the mobile nav overlap bug by June 29.",PROM-17,2026-06-29,Done,kept,clear promise clear ticket
+P19,meeting6.txt,Chen,"I'll set up error monitoring with Sentry by June 29.",PROM-18,2026-06-29,Done,kept,clear promise clear ticket

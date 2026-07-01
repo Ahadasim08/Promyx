@@ -1,0 +1,6 @@
+Team Standup — 2026-06-25
+
+Priya: I'll fix the timezone bug in reports by June 28.
+Tom: I'll optimize the image upload pipeline by July 20.
+Ben: I'll write unit tests for the billing module by June 30.
+Tom: We might also want to revisit the caching layer at some point, no rush.
