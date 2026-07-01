@@ -3,10 +3,10 @@ P01,meeting1.txt,Ali,"I'll close the login bug ticket by Friday, June 5.",PROM-1
 P02,meeting1.txt,Sara,"I'll get the CSV export button done by next Monday, June 8.",PROM-2,2026-06-08,Done,kept,clear promise clear ticket
 P03,meeting1.txt,Ben,"I'll have the CI pipeline set up by end of this week, June 5.",PROM-3,2026-06-05,Done,kept,clear promise clear ticket
 P04,meeting2.txt,Maria,"I'll fix the flaky checkout test by June 15.",PROM-4,2026-06-15,In Progress,broken,deadline passed vs eval date 2026-07-01 ticket still not done
-P05,meeting2.txt,Chen,"I'll add the dark mode toggle by June 20.",PROM-5,2026-06-20,To Do,broken,deadline passed ticket not started
-P06,meeting2.txt,Tom,"I'll fix the memory leak in the worker by June 25, it's been causing restarts.",PROM-8,2026-06-25,In Progress,broken,deadline passed vs eval date
+P05,meeting2.txt,Chen,"I'll add the dark mode toggle by June 20.",PROM-5,2026-06-20,Done,kept,MANUALLY ALTERED - ticket was manually moved to Done during live-Jira integration testing (see answer_key_notes.md) - original scenario was "To Do / broken"
+P06,meeting2.txt,Tom,"I'll fix the memory leak in the worker by June 25, it's been causing restarts.",PROM-8,2026-06-25,Done,kept,MANUALLY ALTERED - ticket was manually moved to Done during live-Jira integration testing (see answer_key_notes.md) - original scenario was "In Progress / broken"
 P07,meeting3.txt,Priya,"I'll finish the onboarding docs by June 18.",PROM-7,2026-06-18,Done,kept,clear promise clear ticket
-P08,meeting3.txt,Ben,"I'll migrate the DB to Postgres 15 by July 10, need to coordinate a maintenance window.",PROM-6,2026-07-10,In Progress,open,deadline not yet reached vs eval date 2026-07-01
+P08,meeting3.txt,Ben,"I'll migrate the DB to Postgres 15 by July 10, need to coordinate a maintenance window.",PROM-6,2026-07-10,Done,kept,MANUALLY ALTERED - ticket was manually moved to Done during live-Jira integration testing (see answer_key_notes.md) - original scenario was "In Progress / open"
 P09,meeting3.txt,Ali,"I'll add rate limiting to the API by July 15.",PROM-9,2026-07-15,To Do,open,deadline not yet reached
 P10,meeting3.txt,Maria,"I'll take care of that thing with the checkout tests soon.",PROM-4,none stated,In Progress,broken,VAGUE promise - no explicit deadline - inferred ticket same as P04 - "soon" already passed by eval date - good test case for linking+vagueness handling
 P11,meeting4.txt,Maria,"I'll fix the broken password reset email by June 22, users are complaining.",PROM-11,2026-06-22,Done,kept,clear promise clear ticket
