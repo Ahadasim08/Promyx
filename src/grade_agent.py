@@ -32,8 +32,9 @@ def load_stored_with_reviews():
     try:
         for r in conn.execute("SELECT * FROM agent_reviews"):
             reviews[r["promise_id"]] = dict(r)
-    except sqlite3.OperationalError:
-        pass
+    except sqlite3.OperationalError as e:
+        if "no such table" not in str(e):
+            raise
     conn.close()
     for p in promises:
         p["agent_review"] = reviews.get(p["id"])
