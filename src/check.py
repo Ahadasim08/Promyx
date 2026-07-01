@@ -41,7 +41,9 @@ def load_agent_reviews():
     conn.row_factory = sqlite3.Row
     try:
         rows = [dict(r) for r in conn.execute("SELECT * FROM agent_reviews")]
-    except sqlite3.OperationalError:
+    except sqlite3.OperationalError as e:
+        if "no such table" not in str(e):
+            raise
         rows = []
     conn.close()
     return {r["promise_id"]: r for r in rows}
