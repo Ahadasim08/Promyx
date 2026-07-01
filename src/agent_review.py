@@ -16,11 +16,6 @@ from pathlib import Path
 from dotenv import load_dotenv
 from groq import Groq
 
-# Add src to path to allow relative imports within this module
-_src_path = Path(__file__).resolve().parent
-if str(_src_path) not in sys.path:
-    sys.path.insert(0, str(_src_path))
-
 from store import DB_PATH, EVAL_DATE, load_tickets
 
 ROOT = Path(__file__).resolve().parent.parent
