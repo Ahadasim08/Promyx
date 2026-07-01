@@ -2,25 +2,25 @@
   "promises": [
     {
       "speaker": "Priya",
-      "promise_text": "I'll finish the onboarding docs by June 18.",
+      "promise_text": "I'll finish the onboarding docs by June 18",
       "ticket": "PROM-7",
       "deadline": "2026-06-18"
     },
     {
       "speaker": "Ben",
-      "promise_text": "I'll migrate the DB to Postgres 15 by July 10, need to coordinate a maintenance window.",
+      "promise_text": "I'll migrate the DB to Postgres 15 by July 10, need to coordinate a maintenance window",
       "ticket": "PROM-6",
       "deadline": "2026-07-10"
     },
     {
       "speaker": "Ali",
-      "promise_text": "I'll add rate limiting to the API by July 15.",
+      "promise_text": "I'll add rate limiting to the API by July 15",
       "ticket": "PROM-9",
       "deadline": "2026-07-15"
     },
     {
       "speaker": "Maria",
-      "promise_text": "I'll take care of that thing with the checkout tests soon.",
+      "promise_text": "I'll take care of that thing with the checkout tests soon",
       "ticket": "PROM-4",
       "deadline": null
     }

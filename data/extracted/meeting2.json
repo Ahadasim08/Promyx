@@ -2,19 +2,19 @@
   "promises": [
     {
       "speaker": "Maria",
-      "promise_text": "I'll fix the flaky checkout test by June 15.",
+      "promise_text": "I'll fix the flaky checkout test by June 15",
       "ticket": "PROM-4",
       "deadline": "2026-06-15"
     },
     {
       "speaker": "Chen",
-      "promise_text": "I'll add the dark mode toggle by June 20.",
+      "promise_text": "I'll add the dark mode toggle by June 20",
       "ticket": "PROM-5",
       "deadline": "2026-06-20"
     },
     {
       "speaker": "Tom",
-      "promise_text": "I'll fix the memory leak in the worker by June 25, it's been causing restarts.",
+      "promise_text": "I'll fix the memory leak in the worker by June 25, it's been causing restarts",
       "ticket": "PROM-8",
       "deadline": "2026-06-25"
     }

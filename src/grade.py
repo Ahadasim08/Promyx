@@ -30,7 +30,8 @@ def load_extracted(transcript_file: str):
 
 
 def norm(s):
-    return (s or "").strip().lower()
+    s = (s or "").strip().lower()
+    return "" if s == "null" else s
 
 
 def grade():

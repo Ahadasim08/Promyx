@@ -1,7 +1,7 @@
 # progress.md — Promise Tracker
 
 ## Current phase
-Step 1 (promise extraction) — first pass done, working well. Not yet iterated on the miss below.
+Step 1 (promise extraction) — DONE. recall=1.00, precision=1.00 (19/19) on the answer key. Ready for Step 2 next session.
 
 ## Done
 - CLAUDE.md written.
@@ -15,11 +15,10 @@ Step 1 (promise extraction) — first pass done, working well. Not yet iterated 
 - Ran full pipeline on all 6 transcripts. **First-pass numbers: recall=0.95 (18/19), precision=0.95 (18/19).** Correctly ignored all 5 distractor (non-promise) lines — zero false positives from those. Correctly caught the vague no-deadline promise (P10, Maria/meeting3).
 
 ## Half-done / in progress
-- One known miss: meeting4.txt, Maria's "I'll fix the broken password reset email by June 22" — model returned `ticket: "null"` (literal string, not real null) instead of linking to PROM-11. Ticket-linking failure on this one line, not a script bug. Not yet fixed — next step is to tighten the prompt (maybe stronger instruction to match on symptom/problem wording, not just noun overlap) and rerun.
+- (none — Step 1 fully done)
 
 ## Next
-- Iterate extraction prompt to fix the PROM-11 miss, rerun `python src/extract.py --all && python src/grade.py`, confirm recall/precision improves or stays at least 0.95.
-- Once Step 1 numbers are solid, move to Step 2 (store promises in DB, link to tickets) — new session.
+- Step 2 (new session): store promises in a DB with status open/done/overdue, link each to its Jira ticket (already inferred by extraction — persist it), grade linking accuracy specifically against the answer key.
 
 ## Decisions
 - Jira simulated locally via `data/jira_tickets.json` for Step 0-1 (no real Jira account needed yet). Real Jira REST API wired in from Step 3.
@@ -28,8 +27,9 @@ Step 1 (promise extraction) — first pass done, working well. Not yet iterated 
 - Frontend (Step 4+) explicitly deferred. User wants a distinctive, non-generic-AI look — use `design-taste-frontend` skill when that step starts, not before.
 
 ## Surprises / learnings
-- Groq JSON-mode occasionally returns the string `"null"` instead of real `null` for missing fields — worth normalizing/handling in the grading and later linking code (Step 2).
+- Groq JSON-mode occasionally returns the string `"null"` instead of real `null` for missing fields — normalized this in `grade.py`'s `norm()` and told the model explicitly not to do it in the prompt. Worth remembering for Step 2's linking/storage code too.
 - Extraction handled the deliberately vague promise (P10) and all 5 distractor lines correctly on the very first prompt attempt — didn't need iteration for those.
+- The one miss (Maria/PROM-11) was a near-verbatim match ("fix the broken password reset email" vs. ticket summary "Fix broken password reset email") that the model still skipped — not a hard case at all. Fixed by explicitly instructing it to check every promise against every ticket before defaulting to null, rather than assuming obvious matches don't need reinforcement.
 
 ## Decisions
 - Jira simulated locally via `data/jira_tickets.json` for Step 0-1 (no real Jira account needed yet). Real Jira REST API wired in from Step 3.
@@ -40,6 +40,6 @@ Step 1 (promise extraction) — first pass done, working well. Not yet iterated 
 - (none yet)
 
 ## Metrics (fill in from Step 1 onward)
-1. Promise-finding: recall = 0.95 (18/19), precision = 0.95 (18/19) — first pass, `llama-3.3-70b-versatile` via Groq, no prompt iteration yet.
-2. Linking: % correct ticket = not measured separately yet (folded into recall/precision above since grading matches on speaker+ticket together). Split out properly in Step 2.
+1. Promise-finding: recall = 1.00 (19/19), precision = 1.00 (19/19) — after one prompt iteration, `llama-3.3-70b-versatile` via Groq. First pass was 0.95/0.95 (18/19); fixed by telling the model to explicitly check every promise against every ticket summary before giving up, and to use real JSON null instead of the string "null".
+2. Linking: % correct ticket = 19/19 (folded into recall/precision above since grading matches on speaker+ticket together). Split out as its own metric in Step 2.
 3. Checking: kept/not-kept accuracy = - (Step 3, not started).

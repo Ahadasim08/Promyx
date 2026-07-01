@@ -27,21 +27,27 @@ SYSTEM_PROMPT = """You extract promises people made during a meeting transcript.
 A promise is a real commitment to do something ("I'll fix X by Friday", "I'm going to finish Y soon").
 Do NOT extract opinions, suggestions, or general chatter ("we should look into X", "might need a refresh eventually").
 
-You are given a list of known Jira tickets (key, summary, status). For each promise, infer which ticket
-it points to, even if the speaker didn't say the ticket key directly - match by meaning against the
-ticket summaries. If truly no ticket fits, use null.
+You are given a list of known Jira tickets (key, summary, status). For EVERY promise, you MUST check
+it against EVERY ticket summary for a match before deciding there is none. Match by meaning, not just
+exact word overlap - a promise can reuse the ticket summary's wording closely (e.g. promise "fix the
+broken password reset email" against ticket summary "Fix broken password reset email" is an obvious
+direct match: use that ticket's key) or paraphrase it loosely (e.g. "that thing with the checkout
+tests" against ticket summary "Fix flaky checkout test" is still a match on topic). Go ticket by ticket
+and check for wording overlap before giving up. Only use null if you have checked every ticket in the
+list and genuinely none relate to the promise's subject.
 
 Deadlines: if the speaker states a date or day, convert it to YYYY-MM-DD using the meeting date as
-reference. If no deadline is stated, use null.
+reference. If no deadline is stated, use the JSON value null (not the string "null").
 
-Respond with ONLY a JSON object of this exact shape, no prose, no markdown fences:
+Respond with ONLY a JSON object of this exact shape, no prose, no markdown fences. Use real JSON null
+(not the string "null") for missing ticket or deadline:
 {
   "promises": [
     {
       "speaker": "string",
       "promise_text": "exact quote from transcript",
-      "ticket": "PROM-4 or null",
-      "deadline": "YYYY-MM-DD or null"
+      "ticket": "PROM-4" or null,
+      "deadline": "YYYY-MM-DD" or null
     }
   ]
 }
