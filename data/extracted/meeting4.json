@@ -1,0 +1,22 @@
+{
+  "promises": [
+    {
+      "speaker": "Maria",
+      "promise_text": "I'll fix the broken password reset email by June 22, users are complaining.",
+      "ticket": "null",
+      "deadline": "2026-06-22"
+    },
+    {
+      "speaker": "Sara",
+      "promise_text": "I'll redesign the settings page by June 25.",
+      "ticket": "PROM-10",
+      "deadline": "2026-06-25"
+    },
+    {
+      "speaker": "Chen",
+      "promise_text": "I'll add Slack notifications by July 5.",
+      "ticket": "PROM-12",
+      "deadline": "2026-07-05"
+    }
+  ]
+}

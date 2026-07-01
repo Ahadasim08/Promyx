@@ -1,0 +1,22 @@
+{
+  "promises": [
+    {
+      "speaker": "Ali",
+      "promise_text": "I'll close the login bug ticket by Friday, June 5.",
+      "ticket": "PROM-1",
+      "deadline": "2026-06-05"
+    },
+    {
+      "speaker": "Sara",
+      "promise_text": "I'll get the CSV export button done by next Monday, June 8.",
+      "ticket": "PROM-2",
+      "deadline": "2026-06-08"
+    },
+    {
+      "speaker": "Ben",
+      "promise_text": "I'll have the CI pipeline set up by end of this week, June 5.",
+      "ticket": "PROM-3",
+      "deadline": "2026-06-05"
+    }
+  ]
+}

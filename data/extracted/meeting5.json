@@ -1,0 +1,22 @@
+{
+  "promises": [
+    {
+      "speaker": "Priya",
+      "promise_text": "I'll fix the timezone bug in reports by June 28.",
+      "ticket": "PROM-14",
+      "deadline": "2026-06-28"
+    },
+    {
+      "speaker": "Tom",
+      "promise_text": "I'll optimize the image upload pipeline by July 20.",
+      "ticket": "PROM-13",
+      "deadline": "2026-07-20"
+    },
+    {
+      "speaker": "Ben",
+      "promise_text": "I'll write unit tests for the billing module by June 30.",
+      "ticket": "PROM-15",
+      "deadline": "2026-06-30"
+    }
+  ]
+}

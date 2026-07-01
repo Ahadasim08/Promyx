@@ -1,0 +1,22 @@
+{
+  "promises": [
+    {
+      "speaker": "Ali",
+      "promise_text": "I'll remove the deprecated v1 API endpoints by July 30.",
+      "ticket": "PROM-16",
+      "deadline": "2026-07-30"
+    },
+    {
+      "speaker": "Sara",
+      "promise_text": "I'll fix the mobile nav overlap bug by June 29.",
+      "ticket": "PROM-17",
+      "deadline": "2026-06-29"
+    },
+    {
+      "speaker": "Chen",
+      "promise_text": "I'll set up error monitoring with Sentry by June 29.",
+      "ticket": "PROM-18",
+      "deadline": "2026-06-29"
+    }
+  ]
+}
