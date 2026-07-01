@@ -1,7 +1,7 @@
 # progress.md — Promise Tracker
 
 ## Current phase
-Step 1 (promise extraction) — DONE. recall=1.00, precision=1.00 (19/19) on the answer key. Ready for Step 2 next session.
+Step 2 (store + link) — DONE. Linking accuracy 19/19 = 1.00. Ready for Step 3 next session.
 
 ## Done
 - CLAUDE.md written.
@@ -14,11 +14,16 @@ Step 1 (promise extraction) — DONE. recall=1.00, precision=1.00 (19/19) on the
 - `src/grade.py` — grades extracted output against `data/answer_key.csv` (matches by speaker+ticket), prints per-file and overall recall/precision.
 - Ran full pipeline on all 6 transcripts. **First-pass numbers: recall=0.95 (18/19), precision=0.95 (18/19).** Correctly ignored all 5 distractor (non-promise) lines — zero false positives from those. Correctly caught the vague no-deadline promise (P10, Maria/meeting3).
 
+- Step 2: `src/store.py` — SQLite DB `data/promises.db`, one `promises` table. Rebuilds from scratch each run (drop+recreate) from `data/extracted/*.json`. Persists the ticket link extraction already made, joins against `data/jira_tickets.json` for ticket status, computes `status` (open/done/overdue) from ticket status + deadline vs eval date `2026-07-01`.
+- `src/grade_linking.py` — pairs each answer-key promise to a stored row by speaker + near-identical promise text (independent of ticket, so ticket correctness is graded on its own axis), reports linking accuracy and a bonus status accuracy.
+- Linking accuracy: **19/19 = 1.00** (extraction's ticket inference from Step 1 held up perfectly once persisted).
+- Status accuracy (bonus, not an official Step 2 metric but cheap to compute): 18/19 = 0.95. Miss is P10 (Maria's vague "soon" promise) — no explicit deadline extracted, so `store.py` can't tell it's overdue and defaults to open. Expected limitation, not a Step 2 bug — deadline inference for vague promises is a Step 1/prompt problem.
+
 ## Half-done / in progress
-- (none — Step 1 fully done)
+- (none — Step 2 fully done)
 
 ## Next
-- Step 2 (new session): store promises in a DB with status open/done/overdue, link each to its Jira ticket (already inferred by extraction — persist it), grade linking accuracy specifically against the answer key.
+- Step 3 (new session): check each promise's linked ticket status against reality, decide kept/broken/still-open, and measure the two Step 3 numbers (accuracy + false-accusation rate). Note: Step 2's "status" field already computes open/done/overdue — Step 3 should reuse or fold into it rather than re-deriving the same logic twice.
 
 ## Decisions
 - Jira simulated locally via `data/jira_tickets.json` for Step 0-1 (no real Jira account needed yet). Real Jira REST API wired in from Step 3.
@@ -41,5 +46,5 @@ Step 1 (promise extraction) — DONE. recall=1.00, precision=1.00 (19/19) on the
 
 ## Metrics (fill in from Step 1 onward)
 1. Promise-finding: recall = 1.00 (19/19), precision = 1.00 (19/19) — after one prompt iteration, `llama-3.3-70b-versatile` via Groq. First pass was 0.95/0.95 (18/19); fixed by telling the model to explicitly check every promise against every ticket summary before giving up, and to use real JSON null instead of the string "null".
-2. Linking: % correct ticket = 19/19 (folded into recall/precision above since grading matches on speaker+ticket together). Split out as its own metric in Step 2.
+2. Linking: % correct ticket = 19/19 = 1.00 (`src/grade_linking.py`, Step 2, graded independently of promise-finding this time — pairs by speaker+text, checks ticket separately).
 3. Checking: kept/not-kept accuracy = - (Step 3, not started).

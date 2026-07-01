@@ -18,10 +18,12 @@ Tool that listens to meeting transcripts, extracts promises people made, and che
 ```
 
 ## How to run
-- (fill in once Step 1 code exists)
+- Step 1 (extract): `python src/extract.py --all` (or a single transcript path). Needs `GROQ_API_KEY` in `.env`. Writes `data/extracted/<meeting>.json`.
+- Step 2 (store + link): `python src/store.py`. Rebuilds `data/promises.db` from `data/extracted/*.json`, links each promise to its Jira ticket, computes status (open/done/overdue).
 
 ## How to test
-- (fill in once Step 1 code exists)
+- Step 1 grading: `python src/grade.py` — recall/precision of promise-finding vs `data/answer_key.csv`.
+- Step 2 grading: `python src/grade_linking.py` — linking accuracy (correct ticket) and status accuracy vs `data/answer_key.csv`. Run `store.py` first.
 
 ## Hard rules
 1. **Always grade against the answer key** (`data/answer_key.csv`). Never trust the tool's own output as ground truth.
